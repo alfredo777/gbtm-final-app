@@ -1,0 +1,116 @@
+<main class="mdl-layout__content ">
+<div class="login"> <!-- card -->
+<div class="account-info mdl-color--primary">
+  <div class="account-navigation"> <!-- top icons -->
+  <div class="clr"></div>
+  <div class="minilogo-account user1"></div> <!-- user -->
+  <span>Sign in to your Account</span>
+</div>
+</div>
+<div class="account-data"> 
+<div id="target"></div><!-- text fields -->
+<form id="login">
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+  <!--<input class="mdl-textfield__input" type="text" id="id-email" name="email" value="nkayabasi@hascevher.com.tr" placeholder="Enter your email" />
+  <input class="mdl-textfield__input" type="text" id="id-email" name="email" value="leon@somosfut.com" placeholder="Enter your email" />
+  <select name="email" id="id-email">
+    <option value="null">Selecciona un correo ..</option>
+    <option value="nkayabasi@hascevher.com.tr">Usuario Sencillo</option>
+    <option value="leon@somosfut.com">Usuario Multiple</option>
+  </select>-->
+  <input class="mdl-textfield__input" type="text" id="id-email" name="email" value="" placeholder="Enter your email" />
+  <label class="mdl-textfield__label" for="sample1"></label>
+</div>
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+  <!--
+  <input class="mdl-textfield__input" type="password" id="id-password" name="password" value="123456" placeholder="Password" />-->
+  <input class="mdl-textfield__input" type="password" id="id-password" name="password" value="" placeholder="Password" />
+  <label class="mdl-textfield__label" for="sample2"></label>
+</div>
+<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary right" href="calendar.html">
+Login
+</button>
+</form>
+<!--<a class="left" href="#">Forgot password?</a>-->
+
+<div class="clr"></div>
+</div>
+</div>
+</main>
+
+<script>
+  $('#login').submit(function(){
+    console.log($("#id-email").val());
+  	var url = 'http://btmconsulting-api.herokuapp.com/verificador_de_password'
+    //var url = 'http://172.20.10.8:3000/verificador_de_password'
+    //var url = 'http://192.168.1.75:3000/verificador_de_password'
+
+  	var user = {
+            email: $("#id-email").val(),
+            password:$("#id-password").val(),
+            device: window.localStorage.getItem("rxID"),
+            system: device.platform,
+            serialx: device.uuid,
+            name: device.name,
+            version: device.version,
+            cordova: device.cordova
+        }
+
+     $('#target').html('sending..');
+
+	 $.ajax({
+            url: url,
+            type: 'get',
+            dataType: "jsonp",
+            jsonp: "callback",
+            success: function (data) {
+                console.log(data.notice);
+                $('#target').html(data.notice);
+
+                if(data.active == true){
+                var inkuser = {'user': data.user};
+                var userInO = JSON.stringify(inkuser);
+                
+                    if(data.extracounts == ''){
+                      var extracounts = false;
+                      var datacount = '';
+                    }else{
+                      var extracounts = data.extracounts;
+                      var res = data.array_acounts;
+                      var datacount = {'accounts': res};
+                      datacount = JSON.stringify(datacount);
+                    }
+                    console.log(datacount);
+                    console.log(extracounts);
+
+                window.localStorage.setItem("loggedIn", 1);
+                window.localStorage.setItem("userId", data.user.id);
+                window.localStorage.setItem("userAccess", userInO);
+                window.localStorage.setItem("activeUser", data.active);
+                window.localStorage.setItem("avatar_mini", data.avatar_mini);
+                window.localStorage.setItem("avatar_large", data.avatar_large);
+                window.localStorage.setItem("accounts_array", datacount);
+                window.localStorage.setItem("extracounts", extracounts);
+                window.localStorage.setItem("cites", 0);
+                var userInOX = window.localStorage.getItem("userAccess");
+                setTimeout(function(){
+                loadView(JSON.parse(userInOX),'profile','load-in-body');
+                },1300);
+
+                setTimeout(function(){
+                loadView(JSON.parse(userInOX),'menu','load-menu');
+                },2300);
+                }else{
+                	alert('Intenta nuevamente');
+                }
+            },
+            error: function(e){
+              console.log('Error: '+ JSON.stringify(e));
+            },
+            data: user
+       });  
+	 return false;
+
+  	
+  });
+</script>
