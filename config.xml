@@ -113,10 +113,6 @@
     <plugin name="cordova-plugin-statusbar" spec="~2.1.2" />
     <plugin name="cordova-plugin-vibration" spec="~2.1.0" />
     <plugin name="cordova-plugin-whitelist" spec="~1.2.1" />
-    <plugin name="cordova-plugin-googlemaps" spec="~1.4.0">
-        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyC9BPYQHyhyX-7iapY6DjcsCMneA-3Ph8A" />
-        <variable name="API_KEY_FOR_IOS" value="AIzaSyDS4NNnajRupjtueTjTks9UYqouFo02eOo" />
-    </plugin>
     <plugin name="cordova-plugin-ios-camera-permissions" spec="~1.1.1" />
     <feature name="http://api.phonegap.com/1.0/camera" />
     <feature name="http://api.phonegap.com/1.0/file" />
@@ -125,5 +121,4 @@
     <plugin name="phonegap-plugin-push" source="npm" spec="~1.10.4">
         <variable name="SENDER_ID" value="865866583528" />
     </plugin>
-    <engine name="android" spec="~6.1.2" />
 </widget>
